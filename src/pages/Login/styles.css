@@ -9,8 +9,9 @@
 }
 
 #login-logo {
-  flex: 1;
+  width: 54%;
   height: 100vh;
+  position: relative;
 
   display: flex;
   align-items: center;
@@ -42,6 +43,10 @@ img#login-intro {
   color: var(--color-text-title);
 }
 
+#login-content {
+  margin-top: 22.9rem;
+}
+
 #login-content form h1 {
   font: 600 3.6rem Poppins;
   margin-bottom: 4.0rem;
@@ -50,8 +55,88 @@ img#login-intro {
 #login-content form .input-block {
   width: 35.2rem;
   height: 7.2rem;
+  margin: 0;
+  padding: 0;
+  border: 0.1rem solid #E6E6F0;
+  border-radius: 0.8rem 0.8rem 0 0;
 }
 
 #login-content form .input-block + .input-block {
+  border-radius: 0 0 0.8rem 0.8rem;
+}
+
+#login-content form .input-block input {
+  font: 1.6rem Poppins;
+  color: var(--color-text-complement);
+
   margin: 0;
+  height: 100%;
+  border: 0;
+  border-radius: inherit;
+}
+
+#login-content #password-remember {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font: 1.4rem Poppins;
+  line-height: 2.4rem;
+  color: var(--color-text-complement);
+
+  margin-top: 2.4rem;
+}
+
+#login-content #password-remember a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#login-content button {
+  border: 0;
+  margin: 4rem 0 12.8rem;
+  width: 35.2rem;
+  height: 5.6rem;
+  border-radius: 8px;
+  font: 600 1.6rem Archivo;
+
+  background-color: var(--color-secundary);
+  color: var(--color-title-in-primary);
+}
+
+#login-content button:disabled {
+  background: var(--color-disabled);
+  color: var(--color-text-complement);
+}
+
+#footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 35.2rem;
+  margin-bottom: 4.8em;
+}
+
+#footer div {
+  display: block;
+}
+
+#footer #base-text {
+  color: var(--color-text-base);
+}
+
+#footer a {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+#footer #complement-text {
+  font-size: 1.2rem;
+  color: var(--color-text-complement);
+}
+
+#footer div p img {
+  margin-left: 0.8rem;
+  color: var(--color-primary);
 }

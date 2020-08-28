@@ -10,7 +10,7 @@ function Routes() {
   return (
     <BrowserRouter>
       <Route path="/" exact component={Landing} />
-      <Route path="/login" exact component={Login} />
+      <Route path="/login" component={Login} />
       <Route path="/study" component={TeacherList} />
       <Route path="/give-classes" component={TeacherForm} />
     </BrowserRouter>
