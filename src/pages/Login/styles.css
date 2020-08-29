@@ -32,7 +32,6 @@ img#login-intro {
 
 #login-content {
   flex: 1;
-  height: 100vh;
 
   display: flex;
   flex-direction: column;
@@ -66,9 +65,6 @@ img#login-intro {
 }
 
 #login-content form .input-block input {
-  font: 1.6rem Poppins;
-  color: var(--color-text-complement);
-
   margin: 0;
   height: 100%;
   border: 0;
@@ -99,6 +95,7 @@ img#login-intro {
   height: 5.6rem;
   border-radius: 8px;
   font: 600 1.6rem Archivo;
+  cursor: pointer;
 
   background-color: var(--color-secundary);
   color: var(--color-title-in-primary);
@@ -107,6 +104,7 @@ img#login-intro {
 #login-content button:disabled {
   background: var(--color-disabled);
   color: var(--color-text-complement);
+  cursor: default;
 }
 
 #footer {

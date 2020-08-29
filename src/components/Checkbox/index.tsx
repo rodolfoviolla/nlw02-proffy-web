@@ -17,7 +17,7 @@ const Checkbox:React.FC<CheckboxProps> = ({ name, label, ...rest }) => {
   }
 
   return (
-    <span id="container" onClick={handleIsChecked}>
+    <span className="unselectable" id="container" onClick={handleIsChecked}>
       <input type="checkbox" name={name} checked={isChecked} {...rest} />
       <span>
         <img src={imgChecked} alt="Selecionado"/>

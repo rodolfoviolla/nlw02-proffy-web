@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import api from '../../services/api';
+import { useAuth } from '../../hooks/auth';
 
 import Input from '../../components/Input';
 import Checkbox from '../../components/Checkbox';
@@ -14,6 +14,7 @@ import './styles.css';
 
 function Login() {
   const { push } = useHistory();
+  const { signIn } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -22,10 +23,14 @@ function Login() {
     e.preventDefault();
 
     try {
-      await api.post('/sessions', { email, password });
+      await signIn({
+        email,
+        password,
+      });
 
       alert('Login realizado com sucesso!');
-      push('/');
+
+      push('/landing');
     } catch {
       alert('Erro ao realizar login!');
     }
@@ -46,17 +51,18 @@ function Login() {
             name="email"
             label=""
             placeholder="E-mail"
-            placeholderAlwaysVisible={true}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholderStyle={'always'}
+            autoFocus
             value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
             name="password"
             label=""
             placeholder="Senha"
-            placeholderAlwaysVisible={true}
-            onChange={(e) => setPassword(e.target.value)}
+            placeholderStyle={'always'}
             value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <div id="password-remember">
