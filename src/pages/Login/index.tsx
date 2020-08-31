@@ -1,93 +1,145 @@
-import React, { useState, FormEvent } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useCallback, useRef } from 'react';
+import { useHistory, Link } from 'react-router-dom';
+import { SubmitHandler, FormHandles } from '@unform/core';
+import { Form } from '@unform/web';
 
 import { useAuth } from '../../hooks/auth';
 
 import Input from '../../components/Input';
 import Checkbox from '../../components/Checkbox';
+import Button from '../../components/Button';
 
 import backgroundImg from '../../assets/images/background.svg';
 import introImg from '../../assets/images/intro.svg';
 import heartImg from '../../assets/images/icons/purple-heart.svg';
 
-import './styles.css';
+import {
+  Container,
+  SiderContainer,
+  Background,
+  Logo, 
+  Content, 
+  InputStyles,
+  PasswordRemember, 
+  Footer, 
+  FooterSignUp, 
+  FooterMessage,
+} from './styles';
+
+interface FormData {
+  email: string;
+  password: string;
+}
 
 function Login() {
   const { push } = useHistory();
   const { signIn } = useAuth();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const formRef = useRef<FormHandles>(null);
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  const [emailIsFilled, setEmailIsFilled] = useState(false);
+  const [passwordIsFilled, setPasswordIsFilled] = useState(false);
+  const [isRemembered, setIsRemembered] = useState(false);
 
-    try {
-      await signIn({
-        email,
-        password,
-      });
-
-      alert('Login realizado com sucesso!');
-
-      push('/landing');
-    } catch {
-      alert('Erro ao realizar login!');
+  const handleIsEmailFilled = useCallback((value: string) => {
+    if (!value && emailIsFilled) {
+      setEmailIsFilled(false);
+    } else if (value && !emailIsFilled) {
+      setEmailIsFilled(true);
     }
-  }
+  }, [emailIsFilled]);
+
+  const handleIsPasswordFilled = useCallback((value: string) => {
+    if (!value && passwordIsFilled) {
+      setPasswordIsFilled(false);
+    } else if (value && !passwordIsFilled) {
+      setPasswordIsFilled(true);
+    }
+  }, [passwordIsFilled]);
+
+  const handleChange = useCallback(() => {
+    setIsRemembered(!isRemembered);
+  }, [isRemembered]);
+
+  const handleSubmit: SubmitHandler<FormData> = useCallback(
+    async ({ email, password}) => {
+      try {
+        await signIn({
+          email,
+          password,
+        }, isRemembered);
+
+        alert('Login realizado com sucesso!');
+
+        push('/landing');
+      } catch {
+        alert('Erro ao realizar login!');
+      }
+    }, [signIn, isRemembered, push]
+  );
 
   return (
-    <div id="page-login">
-      <div id="login-logo">
-        <img id="login-background" src={backgroundImg} alt="Background"/>
-        <img id="login-intro"src={introImg} alt="Intro"/>
-      </div>
+    <Container>
+      <SiderContainer>
+        <Background src={backgroundImg} alt="Background"/>
+        <Logo src={introImg} alt="Intro"/>
+      </SiderContainer>
 
-      <div id="login-content">
-        <form onSubmit={handleSubmit}>
+      <Content>
+        <Form
+          ref={formRef}
+          onSubmit={handleSubmit}
+        >
           <h1>Fazer login</h1>
 
           <Input
+            inputStyles={InputStyles}
             name="email"
             label=""
             placeholder="E-mail"
             placeholderStyle={'always'}
             autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => handleIsEmailFilled(e.target.value)}
           />
           <Input
+            inputStyles={InputStyles}
             name="password"
             label=""
             placeholder="Senha"
             placeholderStyle={'always'}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => handleIsPasswordFilled(e.target.value)}
           />
 
-          <div id="password-remember">
-            <Checkbox name="remember" label="Lembrar-me" onChange={() => {}} />
+          <PasswordRemember>
+            <label>
+              <Checkbox
+                label="Lembrar-me"
+                checked={isRemembered}
+                onChange={handleChange}
+              />
+            </label>
+            
             <a href="/">Esqueci minha senha</a>
-          </div>
+          </PasswordRemember>
 
-          <button disabled={!email || !password} type="submit">Entrar</button>
-        </form>
+          <Button label="Entrar" disabled={!emailIsFilled || !passwordIsFilled} />
+        </Form>
 
-        <div id="footer">
-          <div>
-            <p id="base-text">Não tem conta?</p>
-            <a href="/">Cadastre-se</a>
-          </div>
+        <Footer>
+          <FooterSignUp>
+            <p>Não tem conta?</p>
+            <Link to="/signup">Cadastre-se</Link>
+          </FooterSignUp>
 
-          <div>
-            <p id="complement-text">
+          <FooterMessage>
+            <p>
               É de graça
               <img src={heartImg} alt="Coração"/>
             </p>
-          </div>
-        </div>
-      </div>
-    </div>
+          </FooterMessage>
+        </Footer>
+      </Content>
+    </Container>
   );
 }
 
