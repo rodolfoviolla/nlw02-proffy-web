@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import PageHeader from '../../components/PageHeader';
@@ -11,8 +11,10 @@ import warningIcon from '../../assets/images/icons/warning.svg';
 import api from '../../services/api';
 
 import './styles.css';
+import { Form } from '@unform/web';
 
 function TeacherForm() {
+  const formRef = useRef(null);
   const history = useHistory();
 
   const [name, setName] = useState('');
@@ -50,9 +52,7 @@ function TeacherForm() {
     setScheduleItems(updatedScheduleItems);
   }
 
-  async function handleCreateClass(e: FormEvent) {
-    e.preventDefault();
-
+  async function handleCreateClass() {
     try {
       await api.post('/classes', {
         name,
@@ -80,26 +80,26 @@ function TeacherForm() {
       />
 
       <main>
-        <form onSubmit={handleCreateClass}>
+        <Form ref={formRef} onSubmit={handleCreateClass}>
           <fieldset>
             <legend>Seus dados</legend>
             <Input
               name="name"
               label="Nome completo"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              // value={name}
+              // onChange={(e) => setName(e.target.value)}
             />
             <Input
               name="avatar"
               label="Avatar"
-              value={avatar}
-              onChange={(e) => setAvatar(e.target.value)}
+              // value={avatar}
+              // onChange={(e) => setAvatar(e.target.value)}
             />
             <Input
               name="whatsapp"
               label="WhatsApp"
-              value={whatsapp}
-              onChange={(e) => setWhatsapp(e.target.value)}
+              // value={whatsapp}
+              // onChange={(e) => setWhatsapp(e.target.value)}
             />
             <Textarea
               name="bio"
@@ -131,8 +131,8 @@ function TeacherForm() {
             <Input 
               name="cost"
               label="Custo da sua hora por aula"
-              value={cost}
-              onChange={(e) => setCost(e.target.value)}
+              // value={cost}
+              // onChange={(e) => setCost(e.target.value)}
             />
           </fieldset>
 
@@ -168,15 +168,15 @@ function TeacherForm() {
                   name="from"
                   label="Das"
                   type="time"
-                  value={from}
-                  onChange={e => setScheduleItemValue(index, 'from', e.target.value)}
+                  // value={from}
+                  // onChange={e => setScheduleItemValue(index, 'from', e.target.value)}
                 />
                 <Input
                   name="to"
                   label="Até"
                   type="time"
-                  value={to}
-                  onChange={e => setScheduleItemValue(index, 'to', e.target.value)}
+                  // value={to}
+                  // onChange={e => setScheduleItemValue(index, 'to', e.target.value)}
                 />
               </div>
             ))}
@@ -190,7 +190,7 @@ function TeacherForm() {
             </p>
             <button type="submit">Salvar cadastro</button>
           </footer>
-        </form>
+        </Form>
       </main>
     </div>
   )

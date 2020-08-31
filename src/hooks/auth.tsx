@@ -13,6 +13,7 @@ interface AuthState {
   token: string;
   tokenExpiration: Date;
   user: User;
+  remember: boolean;
 }
 
 interface SignInCredentials {
@@ -22,7 +23,7 @@ interface SignInCredentials {
 
 interface AuthContextData {
   user: User;
-  signIn(credentials: SignInCredentials): Promise<void>;
+  signIn(credentials: SignInCredentials, remember: boolean): Promise<void>;
   signOut(): void;
   updateUser(user: User): void;
 }
@@ -41,6 +42,7 @@ const AuthProvider: React.FC = ({ children }) => {
         token,
         tokenExpiration: new Date(2020, 1, 1),
         user: JSON.parse(user),
+        remember: true,
       }
     }
 
@@ -50,7 +52,7 @@ const AuthProvider: React.FC = ({ children }) => {
     return {} as AuthState;
   });
 
-  async function signIn({ email, password }: SignInCredentials) {
+  async function signIn({ email, password }: SignInCredentials, remember = false) {
     const response = await api.post('/sessions', {
       email,
       password,
@@ -58,28 +60,35 @@ const AuthProvider: React.FC = ({ children }) => {
 
     const { token, user, expiresIn } = response.data;
 
-    localStorage.setItem('@Proffy:token', token);
-    localStorage.setItem('@Proffy:user', JSON.stringify(user));
-
     api.defaults.headers.authorization = `Bearer ${token}`;
+    
+    if (remember) {
+      localStorage.setItem('@Proffy:token', token);
+      localStorage.setItem('@Proffy:user', JSON.stringify(user));
+    }
 
-    setData({ token, tokenExpiration: expiresIn, user });
+    setData({ token, tokenExpiration: expiresIn, user, remember });
   }
 
   function signOut() {
-    localStorage.removeItem('@Proffy:token');
-    localStorage.removeItem('@Proffy:user');
+    if (data.remember) {
+      localStorage.removeItem('@Proffy:token');
+      localStorage.removeItem('@Proffy:user');
+    }
 
     setData({} as AuthState);
   }
 
   function updateUser(user: User) {
-    localStorage.setItem('@Proffy:user', JSON.stringify(user));
+    if (data.remember) {
+      localStorage.setItem('@Proffy:user', JSON.stringify(user));
+    }
 
     setData({
       token: data.token,
       tokenExpiration: data.tokenExpiration,
       user,
+      remember: data.remember,
     });
   }
 
