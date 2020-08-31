@@ -1,29 +1,22 @@
-import React, { useState, InputHTMLAttributes } from 'react';
+import React, {  InputHTMLAttributes } from 'react';
 
 import imgChecked from '../../assets/images/icons/checked.svg';
 
-import './styles.css';
+import { CheckboxContainer, HiddenCheckbox, StyledCheckbox } from './styles';
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
-  name: string;
   label: string;
 }
 
-const Checkbox:React.FC<CheckboxProps> = ({ name, label, ...rest }) => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  function handleIsChecked() {
-    setIsChecked(!isChecked);
-  }
-
+const Checkbox:React.FC<CheckboxProps> = ({ label, checked, ...rest }) => {
   return (
-    <span className="unselectable" id="container" onClick={handleIsChecked}>
-      <input type="checkbox" name={name} checked={isChecked} {...rest} />
-      <span>
+    <CheckboxContainer className="unselectable">
+      <HiddenCheckbox checked={checked} {...rest} />
+      <StyledCheckbox checked={!!checked}>
         <img src={imgChecked} alt="Selecionado"/>
-      </span>
-      <label htmlFor={name}>{label}</label>
-    </span>
+      </StyledCheckbox>
+      <span>{label}</span>
+    </CheckboxContainer>
   );
 }
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useAuth } from '../../hooks/auth';
+
 import logoImg from '../../assets/images/logo.svg';
 import landingImg from '../../assets/images/landing.svg';
 
@@ -13,6 +15,7 @@ import api from '../../services/api';
 import './styles.css';
 
 function Landing() {
+  const { signOut } = useAuth();
   const [totalConnections, setTotalConnections] = useState(0);
 
   useEffect(() => {
@@ -31,7 +34,7 @@ function Landing() {
     <div id="page-landing">
       <div id="page-landing-content" className="container">
         <div className="logo-container">
-          <img src={logoImg} alt="Proffy"/>
+          <img src={logoImg} alt="Proffy" onClick={signOut}/>
           <h2>Sua plataforma de estudos online.</h2>
         </div>
 

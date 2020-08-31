@@ -1,4 +1,5 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useRef } from 'react';
+import { Form } from '@unform/web';
 
 import PageHeader from '../../components/PageHeader';
 import Select from '../../components/Select';
@@ -10,22 +11,24 @@ import api from '../../services/api';
 import './styles.css'
 
 function TeacherList() {
+  const formRef = useRef(null);
+
   const [subject, setSubject] = useState('');
   const [week_day, setWeekDay] = useState('');
   const [time, setTime] = useState('');
 
   const [teachers, setTeachers] = useState<Teacher[]>([]);
 
-  async function searchTeachers(e: FormEvent) {
-    e.preventDefault();
-
+  async function searchTeachers() {
     const { data } = await api.get('/classes', {
       params: {
         subject,
         week_day,
-        time,
+        time: '10:00',
       }
     })
+
+    console.log(data)
     
     setTeachers(data);
   }
@@ -33,7 +36,7 @@ function TeacherList() {
   return (
     <div id="page-teacher-list" className="container">
       <PageHeader title="Estes são os proffys disponíveis">
-        <form id="search-teachers" onSubmit={searchTeachers}>
+        <Form ref={formRef} id="search-teachers" onSubmit={searchTeachers}>
           <Select 
             name="subject" 
             label="Matéria"
@@ -70,12 +73,10 @@ function TeacherList() {
             type="time"
             name="time"
             label="Hora"
-            value={time}
-            onChange={e => setTime(e.target.value)}
           />
 
           <button type="submit">Buscar</button>
-        </form>
+        </Form>
       </PageHeader>
 
       <main>

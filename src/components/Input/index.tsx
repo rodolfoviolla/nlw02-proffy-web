@@ -1,14 +1,17 @@
-import React, { InputHTMLAttributes, useState, useEffect, useRef } from 'react';
+import React, { InputHTMLAttributes, useState, useEffect, useRef, useCallback } from 'react';
+import { FlattenSimpleInterpolation } from 'styled-components';
+import { useField } from '@unform/core';
 
 import passwordSeeImg from '../../assets/images/icons/password-see.svg';
 import passwordUnseeImg from '../../assets/images/icons/password-unsee.svg';
 
-import './styles.css';
+import { Container } from './styles';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label: string;
   placeholderStyle?: 'always' | 'never' | 'default';
+  inputStyles?: FlattenSimpleInterpolation;
 }
 
 const Input:React.FC<InputProps> = ({
@@ -17,81 +20,85 @@ const Input:React.FC<InputProps> = ({
   type = 'text',
   placeholder,
   placeholderStyle = 'default',
-  value,
-  onChange,
+  inputStyles,
+  style,
   ...rest 
 }) => {
-  const [inputType, setInputType] = useState(type);
-  const [spanClassName, setSpanClassName] = useState('unselectable');
-  const [isVisible, setIsVisible] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
-  const [isFilled, setIsFilled] = useState(false);
+  const { fieldName, defaultValue, registerField } = useField(name);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (inputRef.current) {
-      setIsFilled(inputRef.current.value.length > 0);
-    }
-  }, [value]);
+  const [inputType, setInputType] = useState(type);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
 
   useEffect(() => {
-    setSpanClassName(
-      `unselectable 
-      ${placeholderStyle} 
-      ${isSelected ? 'selected' : 'unselected'} 
-      ${isFilled ? 'filled' : 'unfilled'}`
+    registerField({
+      name: fieldName,
+      ref: inputRef.current,
+      path: 'value',
+    });
+  }, [fieldName, registerField]);
+
+  useEffect(() => {
+    setInputType(
+      (name === 'password' && !isPasswordVisible)
+      ? 'password'
+      : type
     );
-  }, [placeholderStyle, isSelected, isFilled]);
+  }, [type, isPasswordVisible, name]);
 
-  useEffect(() => {
-    if (name === 'password' && !isVisible) {
-      setInputType('password');
-    } else {
-      setInputType(type);
-    }
-  }, [type, isVisible, name]);
-
-  function toggleVisibility() {
-    setIsVisible(!isVisible);
+  const toggleVisibility = useCallback(() => {
+    setIsPasswordVisible(oldVisible => !oldVisible);
 
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }
+  }, []);
 
-  function handleIsSelected(isFocus: boolean) {
+  const handleIsSelected = useCallback((isFocus: boolean) => {
     setIsSelected(isFocus);
-  }
+
+    if (inputRef.current) {
+      setIsFilled(inputRef.current.value.length > 0);
+    }
+  }, []);
 
   return (
-    <div className="input-block">
+    <Container 
+      className="input-block"
+      inputStyles={inputStyles}
+      placeholderStyle={placeholderStyle}
+      isFilled={isFilled}
+      isSelected={isSelected}
+      noLabel={!label}
+      style={style}
+    >
       <label htmlFor={name}>{label}</label>
       
       <input 
         {...rest}
-        className={`placeholder-${placeholderStyle}`}
         id={name}
         type={inputType}
         placeholder=""
         ref={inputRef}
-        value={value}
-        onChange={onChange}
+        defaultValue={defaultValue}
         onFocus={() => handleIsSelected(true)}
         onBlur={() => handleIsSelected(false)}
       />
 
-      <span className={spanClassName} onClick={() => inputRef.current?.focus()} >
+      <span onClick={() => inputRef.current?.focus()}>
         {placeholder}
       </span>
 
       {name === 'password' && 
         <img 
           onClick={toggleVisibility} 
-          src={isVisible ? passwordUnseeImg : passwordSeeImg} 
+          src={isPasswordVisible ? passwordUnseeImg : passwordSeeImg} 
           alt="Mostrar/Esconder senha"
         />
       }
-    </div>
+    </Container>
   );
 }
 
