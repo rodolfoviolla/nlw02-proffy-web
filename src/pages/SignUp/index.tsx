@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { SubmitHandler, FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 
@@ -9,6 +9,8 @@ import Button from '../../components/Button';
 import backPurpleIcon from '../../assets/images/icons/back-purple.svg';
 import backgroundImg from '../../assets/images/background.svg';
 import introImg from '../../assets/images/intro.svg';
+
+import api from '../../services/api';
 
 import {
   Container,
@@ -21,18 +23,33 @@ import {
 } from './styles';
 
 interface FormData {
-  fistName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   email: string;
   password: string;
 }
 
 function SignUp() {
+  const { push } = useHistory();
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit: SubmitHandler<FormData> = useCallback((data) => {
-    console.log(data);
-  }, []);
+  const handleSubmit: SubmitHandler<FormData> = useCallback(
+    async ({ firstname, lastname, email, password }) => {
+      try {
+        await api.post('/users', {
+          firstname,
+          lastname,
+          email,
+          password,
+        });
+
+        alert('Cadastro realizado, por favor, efetue seu login.');
+        push('/');
+      } catch (err) {
+        alert('Erro ao realizar seu cadastro.');
+      }
+    },
+  [push]);
 
   return (
     <Container>
@@ -52,7 +69,7 @@ function SignUp() {
 
           <Input
             inputStyles={InputStyles}
-            name="fistname"
+            name="firstname"
             label=""
             placeholder="Nome"
             placeholderStyle={'always'}
