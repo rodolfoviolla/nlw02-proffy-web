@@ -89,9 +89,10 @@ export const Container = styled.div<ContainerProps>`
     `}
 
     ${
-      ({ placeholderStyle, isFilled }) => 
+      ({ placeholderStyle, isFilled, isSelected }) => 
         ((placeholderStyle === 'never') ||
-        (placeholderStyle === 'default' && isFilled)) && css`
+        (placeholderStyle === 'default' && isFilled) ||
+        (placeholderStyle === 'default' && isSelected)) && css`
           display: none;
     `}
   }

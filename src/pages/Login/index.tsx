@@ -95,6 +95,8 @@ function Login() {
           <Input
             inputStyles={InputStyles}
             name="email"
+            type="email"
+            autoComplete="off"
             label=""
             placeholder="E-mail"
             placeholderStyle={'always'}

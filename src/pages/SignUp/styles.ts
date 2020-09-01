@@ -53,6 +53,10 @@ export const Content  = styled.div`
     position: absolute;
     top: 21%;
 
+    @media (max-height: 660px) {
+      top: 10%;
+    }
+
     h1 {
       font: 600 3.6rem Poppins;
     }
@@ -70,6 +74,10 @@ export const ContentHeader = styled.div`
   height: auto;
   margin-top: 3.2rem;
 
+  @media (max-height: 660px) {
+    margin-top: 2rem;
+  }
+
   a {
     height: 3.2rem;
     transition: opacity 0.2s;
@@ -78,6 +86,10 @@ export const ContentHeader = styled.div`
       opacity: 0.6;
     }
   }
+`;
+
+export const ButtonContainer = styled.div`
+  margin-top: 5.6rem;
 `;
 
 export const SiderContainer = styled.div`
@@ -91,10 +103,15 @@ export const SiderContainer = styled.div`
 
   background-color: var(--color-primary);
   color: var(--color-title-in-primary);
+
+  @media (max-width: 1400px) {
+    display: none;
+  }
 `;
 
 export const Background = styled.img`
   width: 100%;
+  max-width: 800px;
   padding: 7.8rem 9.2rem;
 `;
 

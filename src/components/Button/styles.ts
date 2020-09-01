@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 export const Container = styled.button`
   border: 0;
-  margin: 4rem 0 12.8rem;
+  /* margin: 4rem 0 12.8rem; */
   width: 35.2rem;
   height: 5.6rem;
   border-radius: 8px;

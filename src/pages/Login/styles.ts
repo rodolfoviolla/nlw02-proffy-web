@@ -22,6 +22,10 @@ export const Container = styled.div`
   align-items: stretch;
 
   overflow: hidden;
+
+  @media (max-width: 1400px) {
+    flex-direction: column;
+  }
 `;
 
 export const SiderContainer = styled.div`
@@ -35,21 +39,44 @@ export const SiderContainer = styled.div`
 
   background-color: var(--color-primary);
   color: var(--color-title-in-primary);
+
+  @media (max-width: 1400px) {
+    justify-content: flex-start;
+    width: 100vw;
+    height: auto;
+  }
 `;
 
 export const Background = styled.img`
   width: 100%;
+  max-width: 800px;
   padding: 7.8rem 9.2rem;
+
+  @media (max-width: 1400px) {
+    display: none;
+  }
 `;
 
 export const Logo  = styled.img`
   position: absolute;
+
+  @media (max-width: 1400px) {
+    position: relative;
+    width: 20rem;
+    margin: 2rem 0 2rem 5rem;
+  }
+
+  @media (max-height: 660px) {
+    position: relative;
+    width: 15rem;
+    margin: 2rem 0 2rem 5rem;
+  }
 `;
 
-const appearFromRight = keyframes`
+const appearFromRight = (from: number) => keyframes`
   from {
     opacity: 0;
-    transform: translateX(50px);
+    transform: translateX(${from}rem);
   }
   to {
     opacity: 1;
@@ -70,11 +97,18 @@ export const Content  = styled.div`
   background-color: var(--color-background);
   color: var(--color-text-title);
 
-  animation: ${appearFromRight} 1s;
+  animation: ${appearFromRight(5)} 1s;
 
-  form h1 {
-    font: 600 3.6rem Poppins;
-    margin-bottom: 4.0rem;
+  @media (max-width: 1400px) {
+    margin-top: 2rem;
+    animation: ${appearFromRight(3)} 1s;
+  }
+
+  form {
+    h1 {
+      font: 600 3.6rem Poppins;
+      margin-bottom: 4.0rem;
+    }
   }
 `;
 
@@ -87,7 +121,7 @@ export const PasswordRemember  = styled.div`
   line-height: 2.4rem;
   color: var(--color-text-complement);
 
-  margin-top: 2.4rem;
+  margin: 2.4rem 0 4rem 0;
 
   a {
     text-decoration: none;
@@ -101,7 +135,7 @@ export const Footer  = styled.div`
   justify-content: space-between;
 
   width: 35.2rem;
-  margin-bottom: 4.8em;
+  margin: 4.8em;
 `;
 
 export const FooterSignUp  = styled.div`

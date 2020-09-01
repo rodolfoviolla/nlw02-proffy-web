@@ -1,6 +1,7 @@
 import React, { InputHTMLAttributes, useState, useEffect, useRef, useCallback } from 'react';
 import { FlattenSimpleInterpolation } from 'styled-components';
 import { useField } from '@unform/core';
+import { isMobile } from 'react-device-detect';
 
 import passwordSeeImg from '../../assets/images/icons/password-see.svg';
 import passwordUnseeImg from '../../assets/images/icons/password-unsee.svg';
@@ -22,6 +23,7 @@ const Input:React.FC<InputProps> = ({
   placeholderStyle = 'default',
   inputStyles,
   style,
+  autoFocus,
   ...rest 
 }) => {
   const { fieldName, defaultValue, registerField } = useField(name);
@@ -78,6 +80,7 @@ const Input:React.FC<InputProps> = ({
       
       <input 
         {...rest}
+        autoFocus={isMobile ? false : autoFocus}
         id={name}
         type={inputType}
         placeholder=""

@@ -16,6 +16,7 @@ import {
   Container,
   Content, 
   ContentHeader,
+  ButtonContainer,
   InputStyles,
   SiderContainer,
   Background,
@@ -71,6 +72,7 @@ function SignUp() {
             inputStyles={InputStyles}
             name="firstname"
             label=""
+            autoComplete="off"
             placeholder="Nome"
             placeholderStyle={'always'}
             autoFocus
@@ -79,12 +81,15 @@ function SignUp() {
             inputStyles={InputStyles}
             name="lastname"
             label=""
+            autoComplete="off"
             placeholder="Sobrenome"
             placeholderStyle={'always'}
           />
           <Input
             inputStyles={InputStyles}
             name="email"
+            type="email"
+            autoComplete="off"
             label=""
             placeholder="E-mail"
             placeholderStyle={'always'}
@@ -97,8 +102,9 @@ function SignUp() {
             placeholderStyle={'always'}
             style={{ borderRadius: '0 0 8px 8px' }}
           />
-
-          <Button label="Concluir cadastro"/>
+          <ButtonContainer>
+            <Button label="Concluir cadastro"/>
+          </ButtonContainer>
         </Form>
       </Content>
 
