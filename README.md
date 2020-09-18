@@ -33,9 +33,9 @@
 </p>
 
 <p align="center">
-  <img width="976" height="500" src="./assets/SignUp.png" alt="SignUp Screen">
-  <img width="976" height="500" src="./assets/Login-Unfilled.png" alt="Login Screen Unfilled">
-  <img width="976" height="500" src="./assets/Login-Filled.png" alt="Login Screen Filled.png">
+  <img width="968" height="500" src="./assets/SignUp.png" alt="SignUp Screen">
+  <img width="968" height="500" src="./assets/Login-Unfilled.png" alt="Login Screen Unfilled">
+  <img width="968" height="500" src="./assets/Login-Filled.png" alt="Login Screen Filled.png">
   <img width="976" height="500" src="./assets/Dashboard.png" alt="Dashboard Screen">
 </p>
 
